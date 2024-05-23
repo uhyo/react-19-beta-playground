@@ -1,6 +1,7 @@
 import React, {
   Suspense,
   use,
+  useActionState,
   useOptimistic,
   useState,
   useTransition,
@@ -16,6 +17,10 @@ function App() {
       <h2>useOptimistic + useTransition</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Optimistic />
+      </Suspense>
+      <h2>useOptimistic + useActionState</h2>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ActionState />
       </Suspense>
     </>
   );
@@ -63,6 +68,24 @@ const Optimistic: React.FC = () => {
     });
   };
 
+  return <Post likes={displayData} isPending={isPending} like={like} />;
+};
+
+const ActionState: React.FC = () => {
+  const [serverData, runAction, isPending] = useActionState(async () => {
+    addOptimisticLike(!displayData.liked);
+    const result = await likePost();
+    return result;
+  }, use(getLikes()));
+  const [displayData, addOptimisticLike] = useOptimistic(
+    serverData,
+    (state, nextLiked: boolean) => {
+      return { liked: nextLiked, likes: state.likes + (nextLiked ? 1 : -1) };
+    }
+  );
+  const like = () => {
+    runAction();
+  };
   return <Post likes={displayData} isPending={isPending} like={like} />;
 };
 
