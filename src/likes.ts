@@ -14,6 +14,8 @@ setInterval(() => {
   }
 }, 100);
 
+const errorProbability = 0.8;
+
 let likesCachePromise: Promise<LikeData> | undefined;
 
 export function getLikes(): Promise<LikeData> {
@@ -31,12 +33,18 @@ function sleep(duration: number): Promise<void> {
 }
 
 export async function likePost(): Promise<LikeData> {
+  console.log("[api] liking...");
   await sleep(1500);
+  if (Math.random() < errorProbability) {
+    console.log("[api] failure");
+    throw new Error("Failed to like post");
+  }
   if (likes.liked) {
     likes.likes--;
   } else {
     likes.likes++;
   }
   likes.liked = !likes.liked;
+  console.log("[api] success");
   return structuredClone(likes);
 }

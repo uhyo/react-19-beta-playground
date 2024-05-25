@@ -10,31 +10,42 @@ import { useFormStatus } from "react-dom";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import { LikeData, getLikes, likePost } from "./likes";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 function App() {
   return (
     <>
       <h1>React 19 Beta playground</h1>
       <h2>useOptimistic + useTransition</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Optimistic />
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Optimistic />
+        </Suspense>
+      </ErrorBoundary>
       <h2>useOptimistic + useActionState</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <ActionState />
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ActionState />
+        </Suspense>
+      </ErrorBoundary>
       <h2>useOptimistic + form action</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <FormAction />
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading...</div>}>
+          <FormAction />
+        </Suspense>
+      </ErrorBoundary>
       <h2>useOptimistic + form action + useActionState</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <FormActionState />
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading...</div>}>
+          <FormActionState />
+        </Suspense>
+      </ErrorBoundary>
       <h2>useOptimistic + form action + useFormStatus</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <FormActionStatus />
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading...</div>}>
+          <FormActionStatus />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

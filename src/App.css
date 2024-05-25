@@ -59,3 +59,10 @@ button.likes {
     color: #ff9999;
   }
 }
+
+.error-box {
+  padding: 1em;
+  border-radius: 1em;
+  background-color: #ffdddd;
+  margin: 1em 0;
+}
