@@ -27,6 +27,10 @@ function App() {
       <Suspense fallback={<div>Loading...</div>}>
         <FormAction />
       </Suspense>
+      <h2>useOptimistic + form action + useActionState</h2>
+      <Suspense fallback={<div>Loading...</div>}>
+        <FormActionState />
+      </Suspense>
       <h2>useOptimistic + form action + useFormStatus</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <FormActionStatus />
@@ -171,6 +175,26 @@ const FormActionStatus: React.FC = () => {
 const FormActionStatusInner: React.FC<{ likes: LikeData }> = ({ likes }) => {
   const { pending } = useFormStatus();
   return <Post likes={likes} buttonType="submit" isPending={pending} />;
+};
+
+const FormActionState: React.FC = () => {
+  const [serverData, like, isPending] = useActionState(async (currentState) => {
+    addOptimisticLike(!currentState.liked);
+    const newData = await likePost();
+    return newData;
+  }, use(getLikes()));
+  const [displayData, addOptimisticLike] = useOptimistic(
+    serverData,
+    (state, nextLiked: boolean) => {
+      return { liked: nextLiked, likes: state.likes + (nextLiked ? 1 : -1) };
+    }
+  );
+
+  return (
+    <form action={like}>
+      <Post likes={displayData} isPending={isPending} buttonType="submit" />
+    </form>
+  );
 };
 
 export default App;
