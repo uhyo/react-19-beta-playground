@@ -14,7 +14,7 @@ setInterval(() => {
   }
 }, 100);
 
-const errorProbability = 0.8;
+const errorProbability = 0.01;
 
 let likesCachePromise: Promise<LikeData> | undefined;
 
